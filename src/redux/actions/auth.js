@@ -87,8 +87,8 @@ export const login = (email, password) => (dispatch) => {
         );
 };
 
-export const loginWithGoogle = (email, password) => (dispatch) => {
-    return AuthService.loginWithGoogle(email, password)
+export const loginWithGoogle = () => (dispatch) => {
+    return AuthService.loginWithGoogle()
         .then((data) => {
             dispatch({
                 type: LOGIN_SUCCESS,

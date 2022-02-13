@@ -1,26 +1,27 @@
 import React, { useEffect } from 'react'
-
-import {
-    googleClientID
-} from '../../config/index'
+import { useDispatch, useSelector } from 'react-redux';
+import { supabase } from '../../services/supabaseclient';
+import { googleClientID } from '../../config/index'
+import { loginWithGoogle } from '../../redux/actions/auth';
 
 const GoogleSignIn = () => {
+    const dispatch = useDispatch();
     function handleCredentialResponse(response) {
         console.log("Encoded JWT ID token: " + response.credential);
+        // dispatch(loginWithGoogle())
     }
 
     function intitalizeGoogleSignIn() {
-        window.onload = function () {
-            window.google.accounts.id.initialize({
-                client_id: googleClientID,
-                callback: handleCredentialResponse
-            });
-            window.google.accounts.id.renderButton(
-                document.getElementById("buttonDiv"),
-                { text: "continue_with", theme: "filled_blue", size: "large", shape: "pill" }
-            );
-            window.google.accounts.id.prompt();
-        }
+        window.google.accounts.id.initialize({
+            client_id: googleClientID,
+            callback: handleCredentialResponse
+        });
+        window.google.accounts.id.renderButton(
+            document.getElementById("buttonDiv"),
+            { text: "continue_with", theme: "filled_blue", size: "large", shape: "pill" }
+        );
+        window.google.accounts.id.prompt();
+
     }
 
     useEffect(() => {
@@ -34,10 +35,25 @@ const GoogleSignIn = () => {
         }
         document.body.appendChild(script);
     })
+    const onsubmi = async (e) => {
+        supabase.auth.signIn({
+            provider: 'google'
+        })
+            .then((res) => {
 
+                alert(res.error)
+                console.log(res)
+                alert(res)
+            })
+            .catch((e) => {
+                alert(e)
+            })
+
+    }
     return (
         <>
             <div id="buttonDiv"></div>
+            <span onClick={onsubmi}>login</span>
         </>
     )
 }

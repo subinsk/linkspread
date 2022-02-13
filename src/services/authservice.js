@@ -3,16 +3,24 @@ import { supabase } from './supabaseclient'
 
 async function register(name, email, password) {
     try {
-        const { error } = await supabase.auth.signUp({
-            email: 'example@email.com',
-            password: 'example-password',
-        })
+        const { user, session, error } = supabase.auth
+            .signUp({
+                email: email,
+                password: password,
+            }, {
+                data: {
+                    name: name
+                }
+            })
+            .then((res) => {
+                console.log(res)
+            })
         if (error) throw error
+        alert("error:", error)
     }
     catch (error) {
         alert(error.message)
     }
-
 }
 
 async function login(email, password) {
@@ -28,9 +36,8 @@ async function login(email, password) {
 async function loginWithGoogle() {
     const { user, session, error } = await supabase.auth.signIn({
         provider: 'google',
-    }, {
-        redirectTo: 'http://localhost:3000/dashboard'
     })
+    console.log(user, session, error)
     return { user, session, error }
 }
 
@@ -62,4 +69,5 @@ export const AuthService = {
     logout,
     getUser,
     getSession,
+    setAuthCookie
 }
