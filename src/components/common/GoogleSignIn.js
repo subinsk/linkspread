@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { supabase } from '../../services/supabaseclient';
+import { useDispatch } from 'react-redux';
 import { googleClientID } from '../../config/index'
 import { loginWithGoogle } from '../../redux/actions/auth';
 
@@ -8,7 +7,7 @@ const GoogleSignIn = () => {
     const dispatch = useDispatch();
     function handleCredentialResponse(response) {
         console.log("Encoded JWT ID token: " + response.credential);
-        // dispatch(loginWithGoogle())
+        dispatch(loginWithGoogle())
     }
 
     function intitalizeGoogleSignIn() {
@@ -35,25 +34,9 @@ const GoogleSignIn = () => {
         }
         document.body.appendChild(script);
     })
-    const onsubmi = async (e) => {
-        supabase.auth.signIn({
-            provider: 'google'
-        })
-            .then((res) => {
-
-                alert(res.error)
-                console.log(res)
-                alert(res)
-            })
-            .catch((e) => {
-                alert(e)
-            })
-
-    }
     return (
         <>
             <div id="buttonDiv"></div>
-            <span onClick={onsubmi}>login</span>
         </>
     )
 }

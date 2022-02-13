@@ -15,14 +15,9 @@ const Register = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const submitHandler = async (e) => {
+    const submitHandler = (e) => {
         e.preventDefault();
-        await dispatch(register(name, email, password))
-            .then((res) => {
-                if (message) {
-                    console.log(message)
-                }
-            })
+        dispatch(register(name, email, password))
     }
     return (
         <div className='flex flex-col w-full justify-center items-center h-screen bg-blue-600/90'>

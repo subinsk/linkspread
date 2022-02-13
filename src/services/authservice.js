@@ -1,65 +1,82 @@
-import { supabase } from './supabaseclient'
+import { app } from './firebaseClient'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
 
+const auth = getAuth(app);
+auth.languageCode = 'it';
+
+const provider = new GoogleAuthProvider();
 
 async function register(name, email, password) {
-    try {
-        const { user, session, error } = supabase.auth
-            .signUp({
-                email: email,
-                password: password,
-            }, {
-                data: {
-                    name: name
-                }
-            })
-            .then((res) => {
-                console.log(res)
-            })
-        if (error) throw error
-        alert("error:", error)
-    }
-    catch (error) {
-        alert(error.message)
-    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            alert(user)
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(errorCode, " ", errorMessage)
+        });
 }
 
 async function login(email, password) {
-    const { user, session, error } = await supabase.auth.signIn(
-        {
-            email: email,
-            password: password,
-        },
-    )
-    return { user, session, error }
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            alert(user)
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(errorCode, " ", errorMessage)
+        });
 }
 
 async function loginWithGoogle() {
-    const { user, session, error } = await supabase.auth.signIn({
-        provider: 'google',
-    })
-    console.log(user, session, error)
-    return { user, session, error }
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            const user = result.user;
+            alert("Token: ", token, "User: ", user);
+        }).catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(errorCode, " ", errorMessage)
+            // The email of the user's account used.
+            const email = error.email;
+            alert("Email ", email, " has been used")
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            alert(credential)
+        });
 }
 
 async function logout() {
-    const { error } = await supabase.auth.signOut()
-    return error
+
+}
+
+async function onAuthenticationStateChanged() {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            const uid = user.uid;
+            alert(uid)
+        } else {
+            alert('User is signed out')
+        }
+    });
 }
 
 async function getUser() {
-    const { user, error } = await supabase.auth.api.getUser(
-        'ACCESS_TOKEN_JWT',
-    )
-    return { user, error }
+
 }
 async function getSession() {
-    const session = supabase.auth.session()
-    return session
+
 }
 
 function setAuthCookie(req, res) {
-    console.log(req.body);
-    supabase.auth.api.setAuthCookie(req, res);
+
 }
 
 export const AuthService = {
@@ -69,5 +86,6 @@ export const AuthService = {
     logout,
     getUser,
     getSession,
-    setAuthCookie
+    setAuthCookie,
+    onAuthenticationStateChanged
 }
