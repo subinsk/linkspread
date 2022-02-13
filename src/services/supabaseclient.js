@@ -3,5 +3,5 @@ import {
     supabaseURL,
     supabaseAnonKey
 } from '../config/index'
-
-export const supabase = createClient(supabaseURL, supabaseAnonKey)
+console.log('connected')
+export const supabase = createClient(supabaseAnonKey, supabaseURL)
