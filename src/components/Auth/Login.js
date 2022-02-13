@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import {
     login
@@ -9,7 +9,6 @@ import GoogleSignIn from '../common/GoogleSignIn'
 
 const Login = () => {
     const dispatch = useDispatch();
-    const message = useSelector(state => state.message)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -17,11 +16,6 @@ const Login = () => {
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(login(email, password))
-            .then(() => {
-                if (message) {
-                    console.log(message)
-                }
-            })
     }
     return (
         <div className='flex flex-col w-full justify-center items-center h-screen bg-blue-600/90'>
