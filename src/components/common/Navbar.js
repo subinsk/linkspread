@@ -6,6 +6,9 @@ const Navbar = () => {
     const [isMobile, setMobile] = useState(false);
 
     useEffect(() => {
+        window.onload = () => {
+            handleResize()
+        }
         function handleResize() {
             if (window.innerWidth < 750) {
                 setMobile(true)
@@ -14,7 +17,7 @@ const Navbar = () => {
         }
 
         window.addEventListener('resize', handleResize)
-    })
+    }, [])
 
     return (
 
@@ -22,12 +25,12 @@ const Navbar = () => {
             {
                 isMobile ? <MobileNavbar /> :
                     <div className="flex space-x-4">
-                        <Link to="/auth">
+                        <Link to="/auth/login">
                             <span>
                                 Login
                             </span>
                         </Link>
-                        <Link to="/auth">
+                        <Link to="/auth/register">
                             <span>
                                 Register
                             </span>
