@@ -1,47 +1,27 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux';
-import { googleClientID } from '../../config/index'
 import { loginWithGoogle } from '../../redux/actions/auth';
+
+import GoogleIcon from '../../images/icons/google.svg'
 
 const GoogleSignIn = () => {
     const dispatch = useDispatch();
-    function handleCredentialResponse(response) {
-        console.log("Encoded JWT ID token: " + response.credential);
-        dispatch(loginWithGoogle())
+
+    const googleLoginHandler = () => {
+        dispatch(loginWithGoogle());
     }
 
-    function intitalizeGoogleSignIn() {
-        window.google.accounts.id.initialize({
-            client_id: googleClientID,
-            callback: handleCredentialResponse
-        });
-        window.google.accounts.id.renderButton(
-            document.getElementById("buttonDiv"),
-            { text: "continue_with", theme: "filled_blue", size: "large", shape: "pill" }
-        );
-        window.google.accounts.id.prompt();
-
-    }
-
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://accounts.google.com/gsi/client';
-        script.async = true;
-        script.defer = true;
-
-        script.onload = () => {
-            intitalizeGoogleSignIn()
-        }
-        document.body.appendChild(script);
-    })
     return (
-        <>
-            <div id="buttonDiv"></div>
-        </>
+        <button onClick={googleLoginHandler} className='flex items-center p-1 space-x-2 rounded-md border-2 border-black'>
+            <img height={17} width={17} src={GoogleIcon} alt="Google" />
+            <span className='text-medium'>
+                Continue with Google
+            </span>
+        </button>
     )
 }
 
-export default GoogleSignIn
+export default GoogleSignIn;
 
 /* <div id="g_id_onload"
      data-client_id="bcxvxcv"

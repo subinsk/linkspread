@@ -9,7 +9,9 @@ const RequireAuth = ({ children }) => {
         return <Navigate to="/auth/login" />
     }
     return (
-        { children }
+        <>
+            {children}
+        </>
     )
 }
 

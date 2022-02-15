@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { supabase } from '../../services/supabaseclient'
-import {
-    register
-} from '../../redux/actions/auth'
+import { register } from '../../redux/actions/auth'
 import GoogleSignIn from '../common/GoogleSignIn'
 
 const Register = () => {
@@ -23,6 +20,9 @@ const Register = () => {
         <div className='flex flex-col w-full justify-center items-center h-screen bg-blue-600/90'>
             <div className='flex flex-col justify-center items-center border-none space-y-8 rounded-md shadow-md p-8 bg-white'>
                 <span className='text-2xl font-semibold'>Register</span>
+                {
+                    message ? <span>{message.message}</span> : ''
+                }
                 <form onSubmit={submitHandler} className="flex flex-col space-y-4">
                     <label className='flex flex-col' htmlFor="name">
                         Name:

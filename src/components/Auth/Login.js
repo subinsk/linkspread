@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, memo } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import {
     login
@@ -9,6 +10,7 @@ import GoogleSignIn from '../common/GoogleSignIn'
 
 const Login = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -16,6 +18,12 @@ const Login = () => {
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(login(email, password))
+        // .then(() => {
+        //     navigate('../../dashboard', { replace: true })
+        // })
+        // .catch((e) => {
+        //     console.log(e)
+        // })
     }
     return (
         <div className='flex flex-col w-full justify-center items-center h-screen bg-blue-600/90'>
@@ -39,4 +47,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default memo(Login)
