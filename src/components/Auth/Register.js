@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
 import { Link } from 'react-router-dom'
 import { register } from '../../redux/actions/auth'
 import GoogleSignIn from '../common/GoogleSignIn'
 
 const Register = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const message = useSelector(state => state.message)
 
     const [name, setName] = useState('')
@@ -14,7 +17,7 @@ const Register = () => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(register(name, email, password))
+        dispatch(register(name, email, password, navigate))
     }
     return (
         <div className='flex flex-col w-full justify-center items-center h-screen bg-blue-600/90'>

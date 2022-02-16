@@ -17,13 +17,8 @@ const Login = () => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(login(email, password))
-        // .then(() => {
-        //     navigate('../../dashboard', { replace: true })
-        // })
-        // .catch((e) => {
-        //     console.log(e)
-        // })
+        dispatch(login(email, password, navigate))
+
     }
     return (
         <div className='flex flex-col w-full justify-center items-center h-screen bg-blue-600/90'>

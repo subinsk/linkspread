@@ -6,15 +6,13 @@ import {
     LOGOUT,
     SET_MESSAGE,
 } from './types'
-
 import { regSuccessMsg } from '../../utilities/messages';
 
 import { AuthService } from '../../services/authservice'
 
-export const register = (name, email, password) => async (dispatch) => {
+export const register = (name, email, password, navigate) => async (dispatch) => {
     AuthService.register(name, email, password)
         .then((res) => {
-            console.log(res)
             dispatch({
                 type: REGISTER_SUCCESS
             });
@@ -22,6 +20,7 @@ export const register = (name, email, password) => async (dispatch) => {
                 type: SET_MESSAGE,
                 payload: regSuccessMsg,
             });
+            navigate('/auth/login', { replace: true })
         })
         .catch((error) => {
             dispatch({
@@ -35,14 +34,14 @@ export const register = (name, email, password) => async (dispatch) => {
         })
 };
 
-export const login = (email, password) => async (dispatch) => {
+export const login = (email, password, navigate) => async (dispatch) => {
     AuthService.login(email, password)
         .then((res) => {
-            console.log(res)
             dispatch({
                 type: LOGIN_SUCCESS,
-                payload: res.user
+                payload: res
             });
+            navigate('/dashboard', { replace: true })
         })
         .catch((error) => {
             dispatch({
@@ -56,39 +55,30 @@ export const login = (email, password) => async (dispatch) => {
         })
 }
 export const loginWithGoogle = () => (dispatch) => {
-    return AuthService.loginWithGoogle()
+    AuthService.loginWithGoogle()
         .then((data) => {
             dispatch({
                 type: LOGIN_SUCCESS,
                 payload: { user: data },
             });
-        },
-            (error) => {
-                const message =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
+        })
+        .catch((error) => {
+            dispatch({
+                type: LOGIN_FAIL,
+            });
 
-                dispatch({
-                    type: LOGIN_FAIL,
-                });
-
-                dispatch({
-                    type: SET_MESSAGE,
-                    payload: message,
-                });
-
-                return Promise.reject();
-            }
-        );
+            dispatch({
+                type: SET_MESSAGE,
+                payload: error.message,
+            });
+        })
 };
 
-export const logout = () => (dispatch) => {
+export const logout = (navigate) => (dispatch) => {
     AuthService
         .logout()
         .then(() => {
+            navigate('/', { replace: true })
             dispatch({
                 type: LOGOUT,
             });

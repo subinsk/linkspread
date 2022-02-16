@@ -1,5 +1,5 @@
 import { app } from './firebaseClient'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 
 const auth = getAuth(app);
 auth.languageCode = 'it';
@@ -9,14 +9,10 @@ const provider = new GoogleAuthProvider();
 async function register(name, email, password) {
     return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential;
-                console.log(user)
+            .then((user) => {
                 resolve(user);
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
                 reject(error)
             });
     })
@@ -25,9 +21,7 @@ async function register(name, email, password) {
 async function login(email, password) {
     return new Promise((resolve, reject) => {
         signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential;
-                console.log(user)
+            .then((user) => {
                 resolve(user);
             })
             .catch((error) => {
@@ -62,7 +56,12 @@ async function loginWithGoogle() {
 }
 
 async function logout() {
-
+    try {
+        await signOut(auth)
+    }
+    catch (err) {
+        throw new Error(err);
+    }
 }
 
 async function onAuthenticationStateChanged() {

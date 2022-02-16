@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Navigate, Routes, Route } from 'react-router-dom'
+import { useSelector } from "react-redux";
 
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard"
@@ -10,6 +11,8 @@ import Register from "./components/Auth/Register";
 import RequireAuth from "./components/common/RequireAuth";
 
 const App = () => {
+  const res = useSelector(state => state)
+  console.log(res)
   return (
     <Router>
       <Routes>
