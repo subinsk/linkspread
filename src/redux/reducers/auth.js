@@ -5,7 +5,6 @@ import {
     LOGIN_FAIL,
     LOGOUT,
 } from "../actions/types";
-import { AuthService } from '../../services/authservice'
 
 const initialState = {
     user: null,
