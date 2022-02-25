@@ -1,8 +1,17 @@
 import React from 'react'
 
-const Dashboard = () => {
+import Navbar from '../components/Dashboard/common/Navbar';
+import Topbar from '../components/Dashboard/common/Topbar';
+
+const Dashboard = ({ children }) => {
     return (
-        <div>Dashboard</div>
+        <div className='w-full'>
+            <Topbar />
+            <div className="flex">
+                <Navbar />
+                {children}
+            </div>
+        </div>
     )
 }
 

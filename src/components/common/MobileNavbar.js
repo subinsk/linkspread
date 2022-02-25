@@ -3,11 +3,8 @@ import { Link } from 'react-router-dom'
 
 const MobileNavbar = () => {
     return (
-        <div className='flex flex-col h-screen bg-white/70 items-center justify-center space-y-3 w-full'>
-            <svg xmlns="http://www.w3.org/2000/svg" className="absolute top-10 right-10 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-            <div className="flex space-x-4">
+        <div className='flex border-2 absolute top-12 left-0 right-0 flex-col h-32 bg-white items-center justify-center space-y-3 w-full'>
+            <div className="flex flex-col justify-center items-center font-semibold space-y-4 text-2xl text-blue-700">
                 <Link to="/auth/login">
                     <span>
                         Login

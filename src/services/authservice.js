@@ -1,5 +1,5 @@
 import { app } from './firebaseClient'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 
 const auth = getAuth(app);
 auth.languageCode = 'it';
@@ -7,54 +7,61 @@ auth.languageCode = 'it';
 const provider = new GoogleAuthProvider();
 
 async function register(name, email, password) {
-
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            alert(user)
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            alert(errorCode, " ", errorMessage)
-        });
+    return new Promise((resolve, reject) => {
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((user) => {
+                resolve(user);
+            })
+            .catch((error) => {
+                reject(error)
+            });
+    })
 }
 
 async function login(email, password) {
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            alert(user)
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            alert(errorCode, " ", errorMessage)
-        });
+    return new Promise((resolve, reject) => {
+        signInWithEmailAndPassword(auth, email, password)
+            .then((user) => {
+                resolve(user);
+            })
+            .catch((error) => {
+                reject(error)
+            });
+    })
 }
 
 async function loginWithGoogle() {
-    signInWithPopup(auth, provider)
-        .then((result) => {
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential.accessToken;
-            const user = result.user;
-            alert("Token: ", token, "User: ", user);
-        }).catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            alert(errorCode, " ", errorMessage)
-            // The email of the user's account used.
-            const email = error.email;
-            alert("Email ", email, " has been used")
-            // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error);
-            alert(credential)
-        });
+    return new Promise((resolve, reject) => {
+        signInWithPopup(auth, provider)
+            .then((res) => {
+                // const credential = GoogleAuthProvider.credentialFromResult(result);
+                // const token = credential.accessToken;
+                // const user = result.user;
+                // console.log("Token: ", token, "User: ", user);
+                resolve(res);
+            })
+            .catch((error) => {
+                // const errorCode = error.code;
+                // const errorMessage = error.message;
+                // console.log(errorCode, " ", errorMessage)
+                // The email of the user's account used.
+                // const email = error.email;
+                // console.log("Email ", email, " has been used")
+                // The AuthCredential type that was used.
+                // const credential = GoogleAuthProvider.credentialFromError(error);
+                // console.log(credential)
+                reject(error)
+            })
+    });
 }
 
 async function logout() {
-
+    try {
+        await signOut(auth)
+    }
+    catch (err) {
+        throw new Error(err);
+    }
 }
 
 async function onAuthenticationStateChanged() {
