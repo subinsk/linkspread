@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom'
 const RequireAuth = ({ children }) => {
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn)
     console.log(isLoggedIn)
-    if (!isLoggedIn) {
+    if (isLoggedIn) {
         return <Navigate to="/auth/login" />
     }
     return (

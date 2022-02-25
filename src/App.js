@@ -2,12 +2,13 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Navigate, Routes, Route } from 'react-router-dom'
 
 import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard"
+import DashboardHome from "./components/Dashboard/Home";
 import NotFound from "./components/common/NotFound";
 
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import RequireAuth from "./components/common/RequireAuth";
+import Profile from "./components/Dashboard/Profile/Profile";
 
 const App = () => {
   useEffect(() => {
@@ -28,7 +29,13 @@ const App = () => {
         </Route>
         <Route path="dashboard" element={
           <RequireAuth>
-            <Dashboard />
+            <DashboardHome />
+          </RequireAuth>
+        }>
+        </Route>
+        <Route path="profile" element={
+          <RequireAuth>
+            <Profile />
           </RequireAuth>
         } />
         <Route path="*" element={<NotFound />} />
